@@ -23,7 +23,6 @@ IPAddress mqtt_server(172,16,2,153);
 //AES Key
 uint8_t key256[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
 uint8_t key128[] = {0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5};
-//uint8_t key128[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'};
 uint8_t iv[]     = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 // Topics of MQTT
@@ -75,6 +74,7 @@ void loop(){
 
       Serial.print("READED -> ");
       Serial.println(rfidCard);
+      Serial.println(sizeof(rfidCard));
       aes128_cbc_enc(key128, iv, rfidCard, sizeof(rfidCard));
       Serial.print("encrypted:");
       Serial.println(rfidCard);
@@ -100,6 +100,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     aux[i] = (char)payload[i];
   }
   Serial.println();
+  Serial.println(sizeof(aux));
   aes128_cbc_dec(key128, iv, aux, sizeof(aux));
   Serial.print("DECRYPTED -> ");
   Serial.println(aux);
